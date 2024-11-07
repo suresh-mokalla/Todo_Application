@@ -1,25 +1,40 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import Todolist from './Todolist';
 
 function App() {
+  const [task, setTask] = useState('');
+  const [todo, setTodo] = useState([]);
+  const changeHandler = (e) => {
+    setTask(e.target.value);
+  };
+  const submitHandler = (e) => {
+    e.preventDefault();
+    const newTodos = [...todo, task];
+    setTodo(newTodos);
+    setTask('');
+  };
+  const deleteHandler=(indexValue)=>{
+    const DeleteTodo=todo.filter((todo, index)=> index !== indexValue);
+    setTodo(DeleteTodo);
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div>
+        <h5>Todo Management Application</h5>
+        <form onSubmit={submitHandler}>
+          <input
+            type="text"
+            name="task"
+            value={task}
+            onChange={changeHandler}
+          />
+          &nbsp;&nbsp;
+          <input type="submit" name="Add" value="Add" />
+        </form>
+        <Todolist todolist={todo} deleteHandler={deleteHandler} />
+      </div>
     </div>
   );
 }
-
 export default App;
